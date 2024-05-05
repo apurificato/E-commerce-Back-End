@@ -15,6 +15,14 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  try {
+    const data = req.body
+    await .create(data)
+} catch (err) {
+    console.log(err)
+    // Redirect user back to the register page
+    res.redirect('/')
+}
 });
 
 router.put('/:id', (req, res) => {

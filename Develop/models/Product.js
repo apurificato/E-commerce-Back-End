@@ -11,12 +11,12 @@ class Product extends Model {}
 Product.init(
   {
     // define columns
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
+    // id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   primaryKey: true,
+    //   autoIncrement: true,
+    // },
     product_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -25,7 +25,7 @@ Product.init(
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        is: DECIMAL,
+        isDecimal: true,
       },
     },
     stock: {
@@ -33,14 +33,16 @@ Product.init(
       allowNull: false,
       defaultValue: 10,
       validate: {
-          is: NUMERIC,
+          isInt: true,
         },
     },
-    // Have to add category_id as an integer; references category model's id.
-    // category_id: {
-    //   type: DataTypes.INTEGER,
-
-    // },
+    category_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Category,
+        key: 'id',
+      },
+    },
   },
   {
     sequelize,
