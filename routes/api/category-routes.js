@@ -5,7 +5,11 @@ const { Category, Product } = require('../../models/');
 //   Still need to include associated Products
 router.get('/', async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({
+      include: [
+        { model: Product, attributes: ['id', 'product_name'] },
+      ]
+    });
     res.json(categories);
   } catch (err) {
     console.error(err);
@@ -19,7 +23,12 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const category = await Category.findOne({ where: { id: categoryId } });
+    const category = await Category.findOne({
+      where: { id: categoryId },
+      include: [
+        { model: Product, attributes: ['id', 'product_name'] },
+      ]
+    });
     if (!category) {
       // Error sent if category is not found
       return res.status(404).json({ error: 'Category not found' });
@@ -36,8 +45,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { category_name } = req.body;
-    const category = new Category({ category_name })
-    await Category.create(category)
+    const category = await Category.create({ category_name })
     // Success response for created category
     res.status(201).json(category);
   } catch (err) {
