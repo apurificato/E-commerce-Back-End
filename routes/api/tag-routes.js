@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Tag, Product, ProductTag } = require('../../models');
 
 // Router to get a new tag in the database:
+//   Still need to include associated Product data
 router.get('/', async (req, res) => {
   try {
     const tags = await Tag.findAll();
@@ -14,6 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Router to get a new tag in the database by its ID:
+//   Still need to include associated Product data
 router.get('/:id', async (req, res) => {
   try {
     const tagId = req.params.id;

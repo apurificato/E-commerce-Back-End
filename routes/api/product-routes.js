@@ -2,10 +2,14 @@ const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // Router to get a new products in the database:
-//   Still need to include its associated Category and Tag data
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      include: [
+        { model: Category, attributes: ['id', 'category_name'] },
+        { model: Tag, attributes: ['id', 'tag_name'], through: { attributes: [] } }
+      ]
+    });
     res.json(products);
   } catch (err) {
     console.error(err);
@@ -15,11 +19,16 @@ router.get('/', async (req, res) => {
 });
 
 // Router to get a new product in the database by its ID:
-//   Still need to include its associated Category and Tag data
 router.get('/:id', async (req, res) => {
   try {
     const productId = req.params.id;
-    const product = await Product.findOne({ where: { id: productId } });
+    const product = await Product.findOne({
+      where: { id: productId },
+      include: [
+        { model: Category, attributes: ['id', 'category_name'] },
+        { model: Tag, attributes: ['id', 'tag_name'], through: { attributes: [] } }
+      ]
+    });
     if (!product) {
       // Error sent if product is not found
       return res.status(404).json({ error: 'Product not found' });

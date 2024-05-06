@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Category, Product } = require('../../models/');
 
 // Router to get a new category in the database:
+//   Still need to include associated Products
 router.get('/', async (req, res) => {
   try {
     const categories = await Category.findAll();
@@ -14,6 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Router to get a new category in the database by its ID:
+//   Still need to include associated Products
 router.get('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
