@@ -1,0 +1,4 @@
+# .env
+# forgot but .env needs to be removed or commented out here when running the server, otherwise it will prevent it from running.
+.DS_Store
+node_modules
