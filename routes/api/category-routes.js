@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { Category } = require('../../models/Category');
+const { Category } = require('../../models/');
 
 // Router to get a new category in the database:
-router.get('/categories', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const categories = await Category.findAll();
     res.json(categories);
@@ -14,7 +14,7 @@ router.get('/categories', async (req, res) => {
 });
 
 // Router to get a new category in the database by its ID:
-router.get('/categories/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findOne({ where: { id: categoryId } });
@@ -31,7 +31,7 @@ router.get('/categories/:id', async (req, res) => {
 });
 
 // Router to create a new category in the database:
-router.post('/categories', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { category_name } = req.body;
     const category = new Category({ category_name })
@@ -46,7 +46,7 @@ router.post('/categories', async (req, res) => {
 });
 
 // Router to update a new category in the database by its ID:
-router.put('/categories/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findByPk(categoryId);
@@ -65,7 +65,7 @@ router.put('/categories/:id', async (req, res) => {
 });
 
 // Router to delete a category in the database by its ID:
-router.delete('/categories/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findByPk(categoryId);
