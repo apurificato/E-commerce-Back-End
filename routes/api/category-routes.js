@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Category, Product } = require('../../models/');
+const { Category } = require('../../models/Category');
 
 // Router to get a new category in the database:
 router.get('/categories', async (req, res) => {
