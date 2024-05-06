@@ -2,9 +2,15 @@ const router = require('express').Router();
 const { Tag, Product, ProductTag } = require('../../models');
 
 // Router to get a new tag in the database:
+//   Still need to include associated Product data
 router.get('/', async (req, res) => {
   try {
-    const tags = await Tag.findAll();
+    const tags = await Tag.findAll({
+      include: [
+        { model: Product, attributes: ['id', 'product_name'] },
+        // { model: ProductTag, attributes: ['id', 'product_id', 'tag_id'], through: { attributes: [] } }
+      ]
+    });
     res.json(tags);
   } catch (err) {
     console.error(err);
@@ -14,10 +20,17 @@ router.get('/', async (req, res) => {
 });
 
 // Router to get a new tag in the database by its ID:
+//   Still need to include associated Product data
 router.get('/:id', async (req, res) => {
   try {
     const tagId = req.params.id;
-    const tag = await Tag.findOne({ where: { id: tagId } });
+    const tag = await Tag.findOne({
+      where: { id: tagId },
+      include: [
+        { model: Product, attributes: ['id', 'product_name'] },
+        // { model: ProductTag, attributes: ['id', 'product_id', 'tag_id'], through: { attributes: [] } }
+      ]
+    });
     if (!tag) {
       // Error sent if tag is not found
       return res.status(404).json({ error: 'Tag not found' });
@@ -34,8 +47,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { tag_name } = req.body;
-    const tag = new Tag({ tag_name })
-    await Tag.create(tag)
+    const tag = await Tag.create({ tag_name })
     // Success response for created tag
     res.status(201).json(tag);
   } catch (err) {
